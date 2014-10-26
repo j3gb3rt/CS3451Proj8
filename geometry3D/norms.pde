@@ -1,24 +1,24 @@
-void showNorms(pt[][] samplePoints, float e) {
+void showNorms(pt[][] samplePoints) {
   /*
       D
    A  S  C
       B
    */
-  showN1(samplePoints);
+  showN1(samplePoints, 2, magenta);
   showN2(samplePoints);
-  showN3(samplePoints, e);
+  showN1(samplePoints, 1, grey);
 }
 
-void showN1(pt[][] samplePoints) {
-  for (int x=1; x<samplePoints.length-1; x++) {
-    for (int y=1; y<samplePoints[x].length-1; y++) {
+void showN1(pt[][] samplePoints, int e, color c) {
+  for (int x=e; x<samplePoints.length-e; x++) {
+    for (int y=e; y<samplePoints[x].length-e; y++) {
       /* get surrounding points */
       pt A, B, C, D, S;
       S = samplePoints[x][y];
-      A = samplePoints[x-1][y];
-      B = samplePoints[x][y+1];
-      C = samplePoints[x+1][y];
-      D = samplePoints[x][y-1];
+      A = samplePoints[x-e][y];
+      B = samplePoints[x][y+e];
+      C = samplePoints[x+e][y];
+      D = samplePoints[x][y-e];
       
       /* calculate vectors from S to surrounding points */
       vec SA, SB, SC, SD;
@@ -36,7 +36,7 @@ void showN1(pt[][] samplePoints) {
       
       /* calculate normal from cross products */
       vec norm = A(A(c1, c2), A(c3, c4));
-      show(S, norm);
+      show(S, norm, c);
     }
   }
 }
@@ -60,39 +60,7 @@ void showN2(pt[][] samplePoints) {
       
       /* calculate normal from cross products */
       vec norm = cross(AC, BD);
-      show(S, norm);
-    }
-  }
-}
-
-void showN3(pt[][] samplePoints, float e) {
-  for (int x=1; x<samplePoints.length-1; x++) {
-    for (int y=1; y<samplePoints[x].length-1; y++) {
-      /* get surrounding points */
-      pt A, B, C, D, S;
-      S = samplePoints[x][y];
-      A = coons(S, x-e, y);
-      B = coons(S, x, y+e);
-      C = coons(S, x+e, y);
-      D = coons(S, x, y-e);
-      
-      /* calculate vectors from S to surrounding points */
-      vec SA, SB, SC, SD;
-      SA = V(S, A);
-      SB = V(S, B);
-      SC = V(S, C);
-      SD = V(S, D);
-      
-      /* get cross products */
-      vec c1, c2, c3, c4;
-      c1 = cross(SA, SB);
-      c2 = cross(SB, SC);
-      c3 = cross(SC, SD);
-      c4 = cross(SD, SA);
-      
-      /* calculate normal from cross products */
-      vec norm = A(A(c1, c2), A(c3, c4));
-      show(S, norm);
+      show(S, norm, orange);
     }
   }
 }
@@ -109,8 +77,9 @@ vec cross(vec u, vec v) {
 }
 
 /*
- * Show a vectors normal
+ * Show a points normal
  */
-void show(pt p, vec v) {
-  arrow(p, v, 30);
+void show(pt p, vec n, color c) {
+  fill(c);
+  arrow(p, n, 30);
 }
