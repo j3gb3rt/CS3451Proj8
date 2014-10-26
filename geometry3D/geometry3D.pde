@@ -6,7 +6,10 @@ pt F = P(0,0,0);  // focus point:  the camera is looking at it (moved when 'f or
 pt O=P(100,100,0); // red point controlled by the user via mouseDrag : used for inserting vertices ...
 Boolean gourand=false;
 Boolean mode3=false;
-
+Boolean c=false;
+Boolean j=false;
+Boolean k=false;
+Boolean w=false;
 
 void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
@@ -38,6 +41,19 @@ void draw() {
     pp=P.idOfVertexWithClosestScreenProjectionTo(Mouse()); // id of vertex of P with closest screen projection to mouse (us in keyPressed 'x'...
 
     PtQ.setToL(P,s,Q); // compute interpolated control polygon
+    
+    if(c){
+      myFace = loadImage("data/pic.jpg");
+    }
+    if(j){
+      myFace = loadImage("data/pic.jpg");
+    }
+    if(k){
+      myFace = loadImage("data/pic.jpg");
+    }
+    if(w){
+      myFace = loadImage("data/pic.jpg");
+    }
     
     if(mode3){
     if(gourand){
@@ -104,6 +120,10 @@ void keyPressed() {
   if(key=='#') exit();
   if(key=='G') gourand=!gourand;
   if(key=='3') {if(mode3==false){mode3=true;}else{mode3=false;}}
+  if(key=='4'){c=true;j=false;k=false;w=false;}
+  if(key=='5'){j=true;c=false;k=false;w=false;}
+  if(key=='6'){k=true;c=false;j=false;w=false;}
+  if(key=='7'){w=true;c=false;j=false;k=false;}
   change=true;
   }
 
@@ -148,6 +168,4 @@ void displayFooter() { // Displays help text at the bottom
 String title ="2014: Polyloop Editor in 3D", name ="Jarek Rossignac",
        menu="?:help, !:picture, ~:(start/stop) capture, space: rotate, s/wheel:closer, f/F: refocus, drag/shift: red xy/z, A:anim, #:quit",
        guide="i:insert, d:delete, .:snap F to vertex, l/L: load, w/W:write to file, q/p:copy"; // user's guide
-
-
 
