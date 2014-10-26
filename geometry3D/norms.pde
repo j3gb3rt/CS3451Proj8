@@ -36,7 +36,7 @@ void showN1(pt[][] samplePoints) {
       
       /* calculate normal from cross products */
       vec norm = A(A(c1, c2), A(c3, c4));
-      show(norm);
+      show(S, norm);
     }
   }
 }
@@ -44,6 +44,8 @@ void showN1(pt[][] samplePoints) {
 void showN2(pt[][] samplePoints) {
   for (int x=1; x<samplePoints.length-1; x++) {
     for (int y=1; y<samplePoints[x].length-1; y++) {
+      pt S = samplePoints[x][y];
+      
       /* get surrounding points */
       pt A, B, C, D;
       A = samplePoints[x-1][y];
@@ -58,7 +60,7 @@ void showN2(pt[][] samplePoints) {
       
       /* calculate normal from cross products */
       vec norm = cross(AC, BD);
-      show(norm);
+      show(S, norm);
     }
   }
 }
@@ -90,7 +92,7 @@ void showN3(pt[][] samplePoints, float e) {
       
       /* calculate normal from cross products */
       vec norm = A(A(c1, c2), A(c3, c4));
-      show(norm);
+      show(S, norm);
     }
   }
 }
@@ -109,6 +111,6 @@ vec cross(vec u, vec v) {
 /*
  * Show a vectors normal
  */
-void show(vec v) {
-  
+void show(pt p, vec v) {
+  arrow(p, v, 30);
 }
