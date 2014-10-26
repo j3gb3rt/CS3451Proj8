@@ -6,7 +6,7 @@ pt F = P(0,0,0);  // focus point:  the camera is looking at it (moved when 'f or
 pt O=P(100,100,0); // red point controlled by the user via mouseDrag : used for inserting vertices ...
 Boolean gourand=false;
 Boolean mode3=false;
-Boolean k=false;
+
 
 void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
@@ -38,10 +38,6 @@ void draw() {
     pp=P.idOfVertexWithClosestScreenProjectionTo(Mouse()); // id of vertex of P with closest screen projection to mouse (us in keyPressed 'x'...
 
     PtQ.setToL(P,s,Q); // compute interpolated control polygon
-    
-    if(k){
-      myFace = loadImage("data/Katie.jpg");
-    }
     
     if(mode3){
     if(gourand){
@@ -108,7 +104,6 @@ void keyPressed() {
   if(key=='#') exit();
   if(key=='G') gourand=!gourand;
   if(key=='3') {if(mode3==false){mode3=true;}else{mode3=false;}}
-  if(key=='k'){k=true;}
   change=true;
   }
 
