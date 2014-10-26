@@ -4,6 +4,11 @@ Boolean filming=false, change=false;
 PImage myFace; // picture of author's face, should be: data/pic.jpg in sketch folder
 void snapPicture() {saveFrame("PICTURES/P"+nf(pictureCounter++,3)+".jpg"); }
 
+// *************************************** SAMPLE SIZE
+int sampleSegments = 10;
+float sampleSegmentSize = 1.0f / sampleSegments;
+pt[][] samplePoints; 
+
 // ******************************************COLORS 
 color black=#000000, white=#FFFFFF, // set more colors using Menu >  Tools > Color Selector
    red=#FF0000, green=#00FF01, blue=#0300FF, yellow=#FEFF00, cyan=#00FDFF, magenta=#FF00FB,
