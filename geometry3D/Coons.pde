@@ -62,26 +62,14 @@ void drawGrid(pt[] P, float e){
       
       if (sampleRow == 0) {
         samplePoints[sampleColumn + 1][0] = pt2; 
-        print("s: " + s + ", t: " + t);
-        print("sample Row: 0, ");
-        println("sample Column: " + (sampleColumn + 1));
       }
       if (sampleColumn == 0) {
         //println(sampleRow);
         if (sampleRow == 0) {
           samplePoints[0][0] = pt1;
-          print("s: " + s + ", t: " + t);
-          print("sample Row: 0, ");
-          println("sample Column: 0");
         }
         samplePoints[0][sampleRow + 1] = pt4;
-        print("s: " + s + ", t: " + t);
-        print("sample Row: " + (sampleRow + 1) + ", ");
-        println("sample Column: 0");
       }
-      print("s: " + s + ", t: " + t);
-      print("sample Row: " + (sampleRow + 1) + ", ");
-      println("sample Column: " + (sampleColumn + 1));
       samplePoints[sampleColumn + 1][sampleRow + 1] = pt3;
       beginShape(); 
         v(pt1);
@@ -93,18 +81,21 @@ void drawGrid(pt[] P, float e){
     }
     sampleRow++;
   }
-  println("Start");
-  for (int i = 0; i < sampleSegments + 1; i++) {
-    for ( int j = 0; j < sampleSegments + 1; j++) {
-      print(i + ", " + j + ": ");
-      println(samplePoints[j][i].x + ", " + samplePoints[j][i].y + ", " + samplePoints[j][i].z);
-    }
-  }
 }
   
 void shadeSurface(pt[] P, float e){ 
   for(float s=0; s<1.001-e; s+=e) for(float t=0; t<1.001-e; t+=e) 
   {beginShape(); v(coons(P,s,t)); v(coons(P,s+e,t)); v(coons(P,s+e,t+e)); v(coons(P,s,t+e)); endShape(CLOSE);}
   }
+ 
+ void shadeSurfaceGouraud(pt[] P, float e, float c){ 
+     
+ }
+ void shadeSurfaceTextured(pt[] P, float e){
+   fill(white); 
+    for(float s=0; s<1.001-e; s+=e) for(float t=0; t<1.001-e; t+=e) 
+  {beginShape(); texture(myFace); vTextured(coons(P,s,t),s,t); vTextured(coons(P,s+e,t),s+e,t);vTextured(coons(P,s+e,t+e),s+e,t+e);vTextured(coons(P,s,t+e),s,t+e); endShape(CLOSE);}
+  }
+ 
   
   
