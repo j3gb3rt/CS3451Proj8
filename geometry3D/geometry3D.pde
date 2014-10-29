@@ -54,8 +54,15 @@ void draw() {
     PtQ.setToL(P,s,Q); 
     noFill(); stroke(blue); strokeWeight(4); drawBorders(PtQ.G);
     strokeWeight(1); noStroke();
-    fill(cyan); shadeSurface(PtQ.G,0.01);
-    noFill(); stroke(blue); strokeWeight(2); shadeSurface(PtQ.G,0.1);
+    //fill(cyan); shadeSurface(PtQ.G,sampleSegmentSize);
+    noFill(); stroke(blue); strokeWeight(2); drawGrid(PtQ.G,sampleSegmentSize);
+    stroke(red); fill(red);
+    for(int i = 0; i < (sampleSegments + 1); i++) {
+      for (int j = 0; j < (sampleSegments + 1); j++) {
+        show(samplePoints[i][j], 5.0f);
+        show(samplePoints[i][j], i + ", " + j);
+      }
+    }
 
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
 
@@ -81,6 +88,8 @@ void keyPressed() {
   if(key=='x' || key=='z' || key=='d') P.setPickedTo(pp); // picks the vertex of P that has closest projeciton to mouse
   if(key=='d') P.deletePicked();
   if(key=='i') P.insertClosestProjection(O); // Inserts new vertex in P that is the closeset projection of O
+  if(key=='-') {if (sampleSegments > 2) {sampleSegments--; sampleSegmentSize = 1.0f / sampleSegments;}}
+  if(key=='=') {if (sampleSegments < 1001) {sampleSegments++; sampleSegmentSize = 1.0f / sampleSegments;}}
   if(key=='W') {P.savePts("data/pts"); Q.savePts("data/pts2");}  // save vertices to pts2
   if(key=='L') {P.loadPts("data/pts"); Q.loadPts("data/pts2");}   // loads saved model
   if(key=='w') P.savePts("data/pts");   // save vertices to pts
