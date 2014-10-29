@@ -42,6 +42,46 @@ void drawBorders(pt[] P){
   beginShape(); for(float t=0; t<1.001; t+=e) v(coons(P,t,0)); endShape();
   beginShape(); for(float t=0; t<1.001; t+=e) v(coons(P,t,1)); endShape();
   }
+
+void drawGrid(pt[] P, float e){ 
+  samplePoints = new pt[sampleSegments + 1][sampleSegments + 1];
+  int sampleRow = 0;
+  int sampleColumn = 0;
+  pt pt1;
+  pt pt2;
+  pt pt3;
+  pt pt4;
+  
+  for(float s=0; s<1.001-e; s+=e) {
+    sampleColumn = 0;
+    for(float t=0; t<1.001-e; t+=e) {
+      pt1 = coons(P,s,t);
+      pt2 = coons(P,s,t+e);
+      pt3 = coons(P,s+e,t+e);
+      pt4 = coons(P,s+e,t);
+      
+      if (sampleRow == 0) {
+        samplePoints[sampleColumn + 1][0] = pt2; 
+      }
+      if (sampleColumn == 0) {
+        //println(sampleRow);
+        if (sampleRow == 0) {
+          samplePoints[0][0] = pt1;
+        }
+        samplePoints[0][sampleRow + 1] = pt4;
+      }
+      samplePoints[sampleColumn + 1][sampleRow + 1] = pt3;
+      beginShape(); 
+        v(pt1);
+        v(pt2);
+        v(pt3); 
+        v(pt4);
+      endShape(CLOSE);
+      sampleColumn++;
+    }
+    sampleRow++;
+  }
+}
   
 void shadeSurface(pt[] P, float e){ 
   for(float s=0; s<1.001-e; s+=e) for(float t=0; t<1.001-e; t+=e) 
