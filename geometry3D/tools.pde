@@ -5,7 +5,7 @@ PImage myFace; // picture of author's face, should be: data/pic.jpg in sketch fo
 void snapPicture() {saveFrame("PICTURES/P"+nf(pictureCounter++,3)+".jpg"); }
 
 // *************************************** SAMPLE SIZE
-int sampleSegments = 10;
+int sampleSegments = 4;
 float sampleSegmentSize = 1.0f / sampleSegments;
 pt[][] samplePoints; 
 

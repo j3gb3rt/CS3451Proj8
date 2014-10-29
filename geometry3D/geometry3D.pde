@@ -54,8 +54,15 @@ void draw() {
     PtQ.setToL(P,s,Q); 
     noFill(); stroke(blue); strokeWeight(4); drawBorders(PtQ.G);
     strokeWeight(1); noStroke();
-    fill(cyan); shadeSurface(PtQ.G,sampleSegmentSize);
+    //fill(cyan); shadeSurface(PtQ.G,sampleSegmentSize);
     noFill(); stroke(blue); strokeWeight(2); drawGrid(PtQ.G,sampleSegmentSize);
+    stroke(red); fill(red);
+    for(int i = 0; i < (sampleSegments + 1); i++) {
+      for (int j = 0; j < (sampleSegments + 1); j++) {
+        show(samplePoints[i][j], 5.0f);
+        show(samplePoints[i][j], i + ", " + j);
+      }
+    }
 
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
 

@@ -56,22 +56,32 @@ void drawGrid(pt[] P, float e){
     sampleColumn = 0;
     for(float t=0; t<1.001-e; t+=e) {
       pt1 = coons(P,s,t);
-      pt2 = coons(P,s+e,t);
+      pt2 = coons(P,s,t+e);
       pt3 = coons(P,s+e,t+e);
-      pt4 = coons(P,s,t+e);
+      pt4 = coons(P,s+e,t);
       
       if (sampleRow == 0) {
         samplePoints[sampleColumn + 1][0] = pt2; 
-        print(sampleColumn);
+        print("s: " + s + ", t: " + t);
+        print("sample Row: 0, ");
+        println("sample Column: " + (sampleColumn + 1));
       }
       if (sampleColumn == 0) {
-        println(sampleRow);
+        //println(sampleRow);
         if (sampleRow == 0) {
           samplePoints[0][0] = pt1;
+          print("s: " + s + ", t: " + t);
+          print("sample Row: 0, ");
+          println("sample Column: 0");
         }
-        samplePoints[0][sampleRow] = pt4;
+        samplePoints[0][sampleRow + 1] = pt4;
+        print("s: " + s + ", t: " + t);
+        print("sample Row: " + (sampleRow + 1) + ", ");
+        println("sample Column: 0");
       }
-      println(sampleRow + 1);
+      print("s: " + s + ", t: " + t);
+      print("sample Row: " + (sampleRow + 1) + ", ");
+      println("sample Column: " + (sampleColumn + 1));
       samplePoints[sampleColumn + 1][sampleRow + 1] = pt3;
       beginShape(); 
         v(pt1);
