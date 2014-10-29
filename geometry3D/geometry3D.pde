@@ -43,16 +43,16 @@ void draw() {
     PtQ.setToL(P,s,Q); // compute interpolated control polygon
     
     if(c){
-      myFace = loadImage("data/pic.jpg");
+      myFace = loadImage("data/pic_c.jpg");
     }
     if(j){
-      myFace = loadImage("data/pic.jpg");
+      myFace = loadImage("data/pic_j.jpg");
     }
     if(k){
-      myFace = loadImage("data/pic.jpg");
+      myFace = loadImage("data/pic_k.jpg");
     }
     if(w){
-      myFace = loadImage("data/pic.jpg");
+      myFace = loadImage("data/pic_w.jpg");
     }
     
     if(mode3){
