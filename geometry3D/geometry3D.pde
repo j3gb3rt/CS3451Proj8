@@ -4,9 +4,16 @@ Boolean twistFree=false, animating=true, center=true, showControlPolygon=true;
 float t=0, s=0;
 pt F = P(0,0,0);  // focus point:  the camera is looking at it (moved when 'f or 'F' are pressed
 pt O=P(100,100,0); // red point controlled by the user via mouseDrag : used for inserting vertices ...
+Boolean gourand=false;
+Boolean mode3=false;
+Boolean c=false;
+Boolean j=false;
+Boolean k=false;
+Boolean w=false;
 
 void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
+  textureMode(NORMAL);
   size(600, 600, P3D); // p3D means that we will do 3D graphics
   P.declare(); Q.declare(); PtQ.declare(); // P is a polyloop in 3D: declared in pts
   // P.resetOnCircle(12,100); // used to get started if no model exists on file 
@@ -34,7 +41,22 @@ void draw() {
     pp=P.idOfVertexWithClosestScreenProjectionTo(Mouse()); // id of vertex of P with closest screen projection to mouse (us in keyPressed 'x'...
 
     PtQ.setToL(P,s,Q); // compute interpolated control polygon
+    
+    if(c){
+      myFace = loadImage("data/pic_c.jpg");
+    }
+    if(j){
+      myFace = loadImage("data/pic_j.jpg");
+    }
+    if(k){
+      myFace = loadImage("data/pic_k.jpg");
+    }
+    if(w){
+      myFace = loadImage("data/pic_w.jpg");
+    }
+    
 
+    
     if(showControlPolygon) {
       pushMatrix(); fill(grey,100); scale(1,1,0.01); P.drawClosedCurve(4); P.drawBalls(4); popMatrix(); // show floor shadow of polyloop
       fill(green); P.drawClosedCurve(4); P.drawBalls(4); // draw curve P as cones with ball ends
@@ -54,8 +76,26 @@ void draw() {
     PtQ.setToL(P,s,Q); 
     noFill(); stroke(blue); strokeWeight(4); drawBorders(PtQ.G);
     strokeWeight(1); noStroke();
-    fill(cyan); shadeSurface(PtQ.G,0.01);
-    noFill(); stroke(blue); strokeWeight(2); shadeSurface(PtQ.G,0.1);
+    
+    if(mode3){
+      if(gourand){
+        shadeSurfaceGouraud(PtQ.G,0.1,0.05);
+      }
+      else{
+        shadeSurfaceTextured(PtQ.G,0.1);
+      }
+      noFill(); noStroke(); drawGrid(PtQ.G,sampleSegmentSize);
+    } else {
+      fill(cyan); shadeSurface(PtQ.G,0.01);
+      noFill(); stroke(blue); strokeWeight(2); drawGrid(PtQ.G,sampleSegmentSize);
+      stroke(red); fill(red);
+      for(int i = 0; i < (sampleSegments + 1); i++) {
+        for (int j = 0; j < (sampleSegments + 1); j++) {
+          show(samplePoints[i][j], 5.0f);
+          show(samplePoints[i][j], i + ", " + j);
+        }
+      }
+    }
 
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
 
@@ -81,12 +121,20 @@ void keyPressed() {
   if(key=='x' || key=='z' || key=='d') P.setPickedTo(pp); // picks the vertex of P that has closest projeciton to mouse
   if(key=='d') P.deletePicked();
   if(key=='i') P.insertClosestProjection(O); // Inserts new vertex in P that is the closeset projection of O
+  if(key=='-') {if (sampleSegments > 2) {sampleSegments--; sampleSegmentSize = 1.0f / sampleSegments;}}
+  if(key=='=') {if (sampleSegments < 1001) {sampleSegments++; sampleSegmentSize = 1.0f / sampleSegments;}}
   if(key=='W') {P.savePts("data/pts"); Q.savePts("data/pts2");}  // save vertices to pts2
   if(key=='L') {P.loadPts("data/pts"); Q.loadPts("data/pts2");}   // loads saved model
   if(key=='w') P.savePts("data/pts");   // save vertices to pts
   if(key=='l') P.loadPts("data/pts"); 
   if(key=='a') animating=!animating; // toggle animation
   if(key=='#') exit();
+  if(key=='G') gourand=!gourand;
+  if(key=='3') {if(mode3==false){mode3=true;}else{mode3=false;}}
+  if(key=='4'){c=true;j=false;k=false;w=false;}
+  if(key=='5'){j=true;c=false;k=false;w=false;}
+  if(key=='6'){k=true;c=false;j=false;w=false;}
+  if(key=='7'){w=true;c=false;j=false;k=false;}
   change=true;
   }
 
@@ -116,11 +164,12 @@ void mouseDragged() {
     else F.add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0))); 
     }
   }  
-
+  
+ 
 // **** Header, footer, help text on canvas
 void displayHeader() { // Displays title and authors face on screen
     scribeHeader(title,0); scribeHeaderRight(name); 
-    fill(white); image(myFace, width-myFace.width/2,25,myFace.width/2,myFace.height/2); 
+    fill(white);
     }
 void displayFooter() { // Displays help text at the bottom
     scribeFooter(guide,1); 
@@ -130,5 +179,4 @@ void displayFooter() { // Displays help text at the bottom
 String title ="2014: Polyloop Editor in 3D", name ="Jarek Rossignac",
        menu="?:help, !:picture, ~:(start/stop) capture, space: rotate, s/wheel:closer, f/F: refocus, drag/shift: red xy/z, A:anim, #:quit",
        guide="i:insert, d:delete, .:snap F to vertex, l/L: load, w/W:write to file, q/p:copy"; // user's guide
-
 
