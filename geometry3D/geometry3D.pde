@@ -96,7 +96,7 @@ void draw() {
         }
       }
       // draw normals
-      showNorms(samplePoints, .1);
+      showNorms(samplePoints, sampleSegmentSize/10.0);
     }
 
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
