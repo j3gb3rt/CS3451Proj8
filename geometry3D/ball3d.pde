@@ -1,75 +1,76 @@
-public class ball3d{
-  pts myPoints; //what surface it applies to.
-  final float rad = 10; //radius of the drawn ball
-
-  boolean deciding;
-  int locX, locY;
-  //where I AM 
-  int tarX, tarY;
-  //where I want to be
-  float traveling = 0.0;
-  //How far from here to there I am
-  final float travelRate = 0.05;
-  //How fast I move
-
-
+class ball3d{
+  
+  final float rad = 10; //radius
+  final float travelRate = 0.05;//travel rate, thing is collapsed to it
+  final vec x_dir = V(1,0,0);
+  final vec y_dir = V(0,1,0);
+  final vec z_dir = V(0,0,1);
+  
+  float u,v;
+  pts ptset = PtQ;
+  
   public ball3d(){
-    myPoints = PtQ;//hardcoded for now; will worry about later
-    //I don't think I need stuff up here, but I'm not sure.
-    deciding = true;
-    locX = locY = tarX = tarY = sampleSegments/2; //(sampleSegments)/2;
-    traveling = 0.0;
-    
+    u=v=0.5;
   }
   
-  void draw(){/*
-    fill(black);
-    pt where = coons(this.P.G, this.u, this.v);
-    pushMatrix();
-    where.y += rad;
-    sphere(rad);
-    popMatrix();
-    //*/
-    pt ball = P(samplePoints[locX][locY]);        //initial point
-    vec toGoal = V(samplePoints[locX][locY], samplePoints[tarX][tarY]);  //movement vector - here to there
-    toGoal = V(traveling, toGoal);            //scaling vector via progress
-    ball.add(toGoal);              //merging to find ball contact point on map
+  
+  
+  //test code for figuring out tangents
+  
+  /*void roll(){
+    vec i,j,k,l;//u++, v++, u--, v--
+    //assuming going clockwise, viewed from above, goes up
+    i=V(coon(ptset.g, u,v), coon(ptset.g, u+.01,v)); //u++
+    j=V(coon(ptset.g, u,v), coon(ptset.g, u,v+.01)); //v++
+    k=V(coon(ptset.g, u,v), coon(ptset.g, u-.01,v)); //u--
+    l=V(coon(ptset.g, u,v), coon(ptset.g, u,v-.01)); //v--
+  
+    vec norm = V( N(i,j), N(k,l) ); //(i cross j) + (k cross l)
+    norm.normalize(); 
+  
+    vec down = V(0,-1,0);
+    vec temp = N(norm, down); //makes vectore perpindicular to both norm and tangent...
+    vec tang = N(norm,temp); //which should make this a tangent. 
+    if (tang.y < 0) tang = V(-1.0,tang); //if vector goes up, reverse
+  
+    //how to move? Since I don't need i,j,k,l anymore, I can reuse those!
+    if (abs(tang.y) > .001) {
+      i.normalize();j.normalize();
+  
+      //I may have to switch these out for V(1,0,0) and V(0,0,1)
+  
+      float iF = d(i,tang);
+      float jF = d(j,tang);
+  
+      u = u+iF;  u = (u > 1 ? 1 : u);  u = (u < 0 ? 0 : u);
+      v = v+jF;  v = (v > 1 ? 1 : v);  v = (v < 0 ? 0 : v);
+      //This just locks U and V within (0,1);
+    }
+    //and I have my new point.
+  }*/
+  
+  void roll(){
+    //Temp variables, exploited to find the normal.
+    vec i,j,k,l;//u++, v++, u--, v--
+    //assuming going clockwise, viewed from above, goes up
+    i=V(coons(ptset.G, u,v), coons(ptset.G, u+.01,v)); //u++
+    j=V(coons(ptset.G, u,v), coons(ptset.G, u,v+.01)); //v++
+    k=V(coons(ptset.G, u,v), coons(ptset.G, u-.01,v)); //u--
+    l=V(coons(ptset.G, u,v), coons(ptset.G, u,v-.01)); //v--
+  
+    //Now to get the normal and apply it.
+    vec norm = V( N(i,j), N(k,l) ); //(i cross j) + (k cross l)
+    //norm.y = 0;//This is me flattening it. With the hammer of disencapsulation. Hear the WHAM?
+    norm.normalize();
+    norm = V(travelRate, norm);
+  
+    u = u+norm.x;  u = (u > 1 ? 1 : u);  u = (u < 0 ? 0 : u);
+    v = v+norm.y;  v = (v > 1 ? 1 : v);  v = (v < 0 ? 0 : v);  
+  }
+
+  void draw(){
+    pt ball = coons(ptset.G, u,v);
     ball.add(V(0,0,rad));              //moving up, to true center point of ball
     show(ball, rad);
   }
-
-void roll(){ //rolling on the surface //HAVE TO REWRITE TO TREAT Z AS UP!
-    if (deciding) {
-      float bestY = samplePoints[locX][locY].y;
-      for (int i = greater(locY - 1, 0); i <= lesser(locY + 1, sampleSegments-1); i++){//Keeps it in the array
-        for (int j = greater(locX - 1,0); j <= lesser(locX + 1, sampleSegments-1); j++){//ditto
-          if (samplePoints[i][j].z < bestY) {  //(targeted y of (i,j) < bestY):  
-            tarX = i;
-            tarY = j;
-            bestY = samplePoints[i][j].z;
-          }
-        }
-      }
-      if (tarX == locX && tarY == locY) {
-        traveling = travelRate;
-        deciding = true;
-      } else {
-        deciding = false;
-        traveling = travelRate;
-      }
-  } else {      //moving to somewhere else
-    traveling += travelRate;
-    if (traveling >= 1){    //reached my goal
-      deciding = true;
-      locX = tarX;
-      locY = tarY;
-      traveling = 0;
-      }
-    }
-  }
 }
-
-int greater(int a, int b){ return (a>b ? a:b ); }
-int lesser (int a, int b){ return (a<b ? a:b ); }
-
-//Notes: 

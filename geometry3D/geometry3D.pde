@@ -139,7 +139,7 @@ void keyPressed() {
   if(key=='5'){j=true;c=false;k=false;w=false;}
   if(key=='6'){k=true;c=false;j=false;w=false;}
   if(key=='7'){w=true;c=false;j=false;k=false;}
-  if(key=='0'){print(sphere.deciding);}
+//  if(key=='0'){print(sphere.deciding);}
   change=true;
   }
 
