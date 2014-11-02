@@ -53,33 +53,23 @@ void drawGrid(pt[] P, float e){
   pt pt4;
   
   for(float s=0; s<1.001-e; s+=e) {
-    sampleColumn = 0;
+    sampleRow = 0;
     for(float t=0; t<1.001-e; t+=e) {
       pt1 = coons(P,s,t);
       pt2 = coons(P,s,t+e);
       pt3 = coons(P,s+e,t+e);
       pt4 = coons(P,s+e,t);
+      samplePoints[sampleRow][sampleColumn] = coons(P,s+(e/2), t+(e/2));
       
-      if (sampleRow == 0) {
-        samplePoints[sampleColumn + 1][0] = pt2; 
-      }
-      if (sampleColumn == 0) {
-        //println(sampleRow);
-        if (sampleRow == 0) {
-          samplePoints[0][0] = pt1;
-        }
-        samplePoints[0][sampleRow + 1] = pt4;
-      }
-      samplePoints[sampleColumn + 1][sampleRow + 1] = pt3;
       beginShape(); 
         v(pt1);
         v(pt2);
         v(pt3); 
         v(pt4);
       endShape(CLOSE);
-      sampleColumn++;
+      sampleRow++;
     }
-    sampleRow++;
+    sampleColumn++;
   }
 }
   
