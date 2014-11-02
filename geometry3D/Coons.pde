@@ -43,8 +43,9 @@ void drawBorders(pt[] P){
   beginShape(); for(float t=0; t<1.001; t+=e) v(coons(P,t,1)); endShape();
   }
 
-void drawGrid(pt[] P, float e){ 
+void drawGrid(pt[] P, float e){
   samplePoints = new pt[sampleSegments][sampleSegments];
+  normals = new vec[sampleSegments][sampleSegments];
   int sampleRow = 0;
   int sampleColumn = 0;
   pt pt1;
@@ -68,6 +69,12 @@ void drawGrid(pt[] P, float e){
         v(pt3); 
         v(pt4);
       endShape(CLOSE);
+      
+      // draw normals
+      vec norm = showNorms(samplePoints[sampleRow][sampleColumn], s+(e/2), t+(e/2), e/2);
+      normals[sampleRow][sampleColumn] = norm;
+      noFill(); stroke(blue); strokeWeight(2);
+      
       sampleRow++;
     }
     sampleColumn++;

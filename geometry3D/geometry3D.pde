@@ -98,8 +98,6 @@ void draw() {
           show(samplePoints[i][j], i + ", " + j);
         }
       }
-      // draw normals
-      showNorms(samplePoints, sampleSegmentSize/10.0);
     }
   sphere.roll();
   sphere.draw();

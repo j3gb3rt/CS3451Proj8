@@ -7,7 +7,8 @@ void snapPicture() {saveFrame("PICTURES/P"+nf(pictureCounter++,3)+".jpg"); }
 // *************************************** SAMPLE SIZE
 int sampleSegments = 4;
 float sampleSegmentSize = 1.0f / sampleSegments;
-pt[][] samplePoints; 
+pt[][] samplePoints;
+vec[][] normals;
 
 
 

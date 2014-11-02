@@ -1,107 +1,66 @@
-void showNorms(pt[][] samplePoints, float e) {
-  /*
+vec showNorms(pt P, float s, float t, float e) {
+  /* get surrounding points
       D
    A  S  C
       B
-   */
-  showN1(samplePoints);
-  showN2(samplePoints);
-  showN3(samplePoints, e);
+  */
+  pt A, B, C, D;
+  A = coons(PtQ.G, s-e, t);
+  B = coons(PtQ.G, s, t+e);
+  C = coons(PtQ.G, s+e, t);
+  D = coons(PtQ.G, s, t-e);
+ 
+  vec n1 = showN1(P, A, B, C, D, s, t, e, magenta, -40, 3);
+  vec n2 = showN2(P, A, B, C, D, s, t, e, orange, -30, 4);
+  vec n3 = showN3(P, A, B, C, D, s, t, e/5.0, grey, -20, 5);
+  
+  return n1;
 }
 
-void showN1(pt[][] samplePoints) {
-  for (int x=1; x<samplePoints.length-1; x++) {
-    for (int y=1; y<samplePoints[x].length-1; y++) {
-      /* get surrounding points */
-      pt A, B, C, D, S;
-      S = samplePoints[x][y];
-      A = samplePoints[x-1][y];
-      B = samplePoints[x][y+1];
-      C = samplePoints[x+1][y];
-      D = samplePoints[x][y-1];
-      
-      /* calculate vectors from S to surrounding points */
-      vec SA, SB, SC, SD;
-      SA = V(S, A);
-      SB = V(S, B);
-      SC = V(S, C);
-      SD = V(S, D);
-      
-      /* get cross products */
-      vec c1, c2, c3, c4;
-      c1 = cross(SA, SB);
-      c2 = cross(SB, SC);
-      c3 = cross(SC, SD);
-      c4 = cross(SD, SA);
-      
-      /* calculate normal from cross products */
-      vec norm = A(A(c1, c2), A(c3, c4));
-      norm = norm.normalize();
-      norm = norm.mul(30);
-      show(S, norm, magenta);
-    }
-  }
+vec showN1(pt S, pt A, pt B, pt C, pt D, float s, float t, float e, color c, int h, int w) {
+  /* calculate vectors from S to surrounding points */
+  vec SA, SB, SC, SD;
+  SA = V(S, A);
+  SB = V(S, B);
+  SC = V(S, C);
+  SD = V(S, D);
+  
+  /* get cross products */
+  vec c1, c2, c3, c4;
+  c1 = cross(SA, SB);
+  c2 = cross(SB, SC);
+  c3 = cross(SC, SD);
+  c4 = cross(SD, SA);
+  
+  /* calculate normal from cross products */
+  vec norm = A(A(c1, c2), A(c3, c4));
+  norm = norm.normalize();
+  norm = norm.mul(h);
+  show(S, norm, c, w);
+  return norm;
 }
 
-void showN2(pt[][] samplePoints) {
-  for (int x=1; x<samplePoints.length-1; x++) {
-    for (int y=1; y<samplePoints[x].length-1; y++) {
-      pt S = samplePoints[x][y];
-      
-      /* get surrounding points */
-      pt A, B, C, D;
-      A = samplePoints[x-1][y];
-      B = samplePoints[x][y+1];
-      C = samplePoints[x+1][y];
-      D = samplePoints[x][y-1];
-      
-      /* calculate vectors of surrounding points */
-      vec AC, BD;
-      AC = V(A, C);
-      BD = V(B, D);
-      
-      /* calculate normal from cross products */
-      vec norm = cross(AC, BD);
-      norm = norm.normalize();
-      norm = norm.mul(30);
-      show(S, norm, orange);
-    }
-  }
+vec showN2(pt S, pt A, pt B, pt C, pt D, float s, float t, float e, color c, int h, int w) {
+  /* calculate vectors of surrounding points */
+  vec AC, BD;
+  AC = V(A, C);
+  BD = V(B, D);
+  
+  /* calculate normal from cross products */
+  vec norm = cross(AC, BD);
+  norm = norm.normalize();
+  norm = norm.mul(h);
+  show(S, norm, c, w);
+  return norm;
 }
 
-void showN3(pt[][] samplePoints, float e) {
-  for (int x=1; x<samplePoints.length-1; x++) {
-    for (int y=1; y<samplePoints[x].length-1; y++) {
-      pt S = samplePoints[x][y];
-      
-      /* get surrounding points */
-      pt A, B, C, D;
-      A = coons(PtQ.G, x-e, y);
-      B = coons(PtQ.G, x, y+e);
-      C = coons(PtQ.G, x+e, y);
-      D = coons(PtQ.G, x, y-e);
-      
-      /* calculate vectors from S to surrounding points */
-      vec SA, SB, SC, SD;
-      SA = V(S, A);
-      SB = V(S, B);
-      SC = V(S, C);
-      SD = V(S, D);
-      
-      /* get cross products */
-      vec c1, c2, c3, c4;
-      c1 = cross(SA, SB);
-      c2 = cross(SB, SC);
-      c3 = cross(SC, SD);
-      c4 = cross(SD, SA);
-      
-      /* calculate normal from cross products */
-      vec norm = A(A(c1, c2), A(c3, c4));
-      norm = norm.normalize();
-      norm = norm.mul(30);
-      show(S, norm, grey);
-    }
-  }
+vec showN3(pt S, pt A, pt B, pt C, pt D, float s, float t, float e, color c, int h, int w) {
+  A = coons(PtQ.G, s-e, t);
+  B = coons(PtQ.G, s, t+e);
+  C = coons(PtQ.G, s+e, t);
+  D = coons(PtQ.G, s, t-e);
+  vec norm = showN1(S, A, B, C, D, s, t, e, c, h, w);
+  return norm;
 }
 
 /**
@@ -118,9 +77,9 @@ vec cross(vec u, vec v) {
 /*
  * Show a points normal
  */
-void show(pt p, vec n, color c) {
+void show(pt p, vec n, color c, int w) {
   stroke(c);
   fill(c);
-  arrow(p, n, 5);
+  arrow(p, n, w);
 }
 
