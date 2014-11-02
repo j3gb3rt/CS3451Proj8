@@ -67,6 +67,11 @@ void drawGrid(pt[] P, float e){
         v(pt3); 
         v(pt4);
       endShape(CLOSE);
+      
+      // draw normals
+      showNorms(samplePoints[sampleRow][sampleColumn], s+(e/2), t+(e/2), e/2);
+      noFill(); stroke(blue); strokeWeight(2);
+      
       sampleRow++;
     }
     sampleColumn++;
