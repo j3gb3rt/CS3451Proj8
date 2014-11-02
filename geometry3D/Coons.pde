@@ -44,7 +44,7 @@ void drawBorders(pt[] P){
   }
 
 void drawGrid(pt[] P, float e){ 
-  samplePoints = new pt[sampleSegments + 1][sampleSegments + 1];
+  samplePoints = new pt[sampleSegments][sampleSegments];
   int sampleRow = 0;
   int sampleColumn = 0;
   pt pt1;
@@ -60,6 +60,7 @@ void drawGrid(pt[] P, float e){
       pt3 = coons(P,s+e,t+e);
       pt4 = coons(P,s+e,t);
       samplePoints[sampleRow][sampleColumn] = coons(P,s+(e/2), t+(e/2));
+
       
       beginShape(); 
         v(pt1);

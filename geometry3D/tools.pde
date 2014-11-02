@@ -9,6 +9,8 @@ int sampleSegments = 4;
 float sampleSegmentSize = 1.0f / sampleSegments;
 pt[][] samplePoints; 
 
+
+
 // ******************************************COLORS 
 color black=#000000, white=#FFFFFF, // set more colors using Menu >  Tools > Color Selector
    red=#FF0000, green=#00FF01, blue=#0300FF, yellow=#FEFF00, cyan=#00FDFF, magenta=#FF00FB,
