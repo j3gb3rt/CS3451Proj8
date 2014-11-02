@@ -1,8 +1,5 @@
-
 public class ball3d{
   pts myPoints; //what surface it applies to.
-  float u,v; //Location data, first assumption is that 0 < foo < 1; may have to include scaling variables
-  float y;//NOT 0 < foo < 1; represents the bottom point of the ball - 
   final float rad = 10; //radius of the drawn ball
 
   boolean deciding;
@@ -11,14 +8,13 @@ public class ball3d{
   int tarX, tarY;
   //where I want to be
   float traveling = 0.0;
+  //How far from here to there I am
   final float travelRate = 0.05;
+  //How fast I move
 
 
   public ball3d(){
-    //Something missing.
     myPoints = PtQ;//hardcoded for now; will worry about later
-    u = 0.5; v = 0.5;
-    y = coons(this.myPoints.G, 0.5, 0.5).y;
     //I don't think I need stuff up here, but I'm not sure.
     deciding = true;
     locX = locY = tarX = tarY = sampleSegments/2; //(sampleSegments)/2;
