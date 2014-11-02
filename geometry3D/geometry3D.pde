@@ -10,6 +10,8 @@ Boolean c=false;
 Boolean j=false;
 Boolean k=false;
 Boolean w=false;
+ball3d sphere;
+
 
 void setup() {
   myFace = loadImage("data/pic_c.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
@@ -19,6 +21,7 @@ void setup() {
   // P.resetOnCircle(12,100); // used to get started if no model exists on file 
   P.loadPts("data/pts");  // loads saved model from file
   Q.loadPts("data/pts2");  // loads saved model from file
+  sphere = new ball3d();
   }
 
 void draw() {
@@ -96,7 +99,8 @@ void draw() {
         }
       }
     }
-
+  sphere.roll();
+  sphere.draw();
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
 
   if(keyPressed) {stroke(red); fill(white); ellipse(mouseX,mouseY,26,26); fill(red); text(key,mouseX-5,mouseY+4);}
@@ -135,6 +139,7 @@ void keyPressed() {
   if(key=='5'){j=true;c=false;k=false;w=false;}
   if(key=='6'){k=true;c=false;j=false;w=false;}
   if(key=='7'){w=true;c=false;j=false;k=false;}
+//  if(key=='0'){print(sphere.deciding);}
   change=true;
   }
 
