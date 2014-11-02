@@ -89,8 +89,8 @@ void draw() {
       fill(cyan); shadeSurface(PtQ.G,0.01);
       noFill(); stroke(blue); strokeWeight(2); drawGrid(PtQ.G,sampleSegmentSize);
       stroke(red); fill(red);
-      for(int i = 0; i < (sampleSegments + 1); i++) {
-        for (int j = 0; j < (sampleSegments + 1); j++) {
+      for(int i = 0; i < (sampleSegments); i++) {
+        for (int j = 0; j < (sampleSegments); j++) {
           show(samplePoints[i][j], 5.0f);
           show(samplePoints[i][j], i + ", " + j);
         }
