@@ -1,4 +1,3 @@
-pt[][] samplePoints = new pt[10][10];//just putting this on here, because I can
 
 public class ball3d{
   pts P; //what surface it applies to.
@@ -12,15 +11,19 @@ public class ball3d{
   int tarX, tarY;
   //where I want to be
   float traveling = 0.0;
-  final float travelRate = 0.1;
+  final float travelRate = 0.05;
 
 
   public ball3d(){
+    //Something missing.
     P = PtQ;//hardcoded for now; will worry about later
     u = 0.5; v = 0.5;
     y = coons(this.P.G, 0.5, 0.5).y;
+    //I don't think I need stuff up here, but I'm not sure.
     deciding = true;
-    locX = locY = tarX = tarY = (samplePoints.length)/2;
+    locX = locY = tarX = tarY = sampleSegments; //(sampleSegments)/2;
+    traveling = 0.0;
+    
   }
   
   void draw(){/*
@@ -35,25 +38,25 @@ public class ball3d{
     vec toGoal = V(samplePoints[locX][locY], samplePoints[tarX][tarY]);  //movement vector - here to there
     toGoal = V(traveling, toGoal);            //scaling vector via progress
     ball.add(toGoal);              //merging to find ball contact point on map
-    ball.add(V(0,rad,0));              //moving up, to true center point of ball
+    ball.add(V(0,0,rad));              //moving up, to true center point of ball
     show(ball, rad); 
   
   }
 
-void roll(){ //rolling on the surface
+void roll(){ //rolling on the surface //HAVE TO REWRITE TO TREAT Z AS UP!
     if (deciding) {
       float bestY = samplePoints[locX][locY].y;
-      for (int i = greater(locY - 1, 0); i < lesser(locY + 2, samplePoints.length-1); i++){//Keeps it in the array
-        for (int j = greater(locX - 1,0); j < lesser(locX + 2, samplePoints.length-1); j++){//ditto
-          if (samplePoints[i][j].y < bestY) {  //(targeted y of (i,j) < bestY):  
+      for (int i = greater(locY - 1, 0); i <= lesser(locY + 1, sampleSegments); i++){//Keeps it in the array
+        for (int j = greater(locX - 1,0); j <= lesser(locX + 1, sampleSegments); j++){//ditto
+          if (samplePoints[i][j].z < bestY) {  //(targeted y of (i,j) < bestY):  
             tarX = i;
             tarY = j;
-            bestY = samplePoints[i][j].y;
+            bestY = samplePoints[i][j].z;
           }
         }
       }
       if (tarX == locX && tarY == locY) {
-        traveling = 0;
+        traveling = travelRate;
         deciding = true;
       } else {
         deciding = false;
@@ -73,3 +76,5 @@ void roll(){ //rolling on the surface
 
 int greater(int a, int b){ return (a>b ? a:b ); }
 int lesser (int a, int b){ return (a<b ? a:b ); }
+
+//Notes: 
