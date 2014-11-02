@@ -36,6 +36,8 @@ void showN1(pt[][] samplePoints) {
       
       /* calculate normal from cross products */
       vec norm = A(A(c1, c2), A(c3, c4));
+      norm = norm.normalize();
+      norm = norm.mul(30);
       show(S, norm, magenta);
     }
   }
@@ -60,6 +62,8 @@ void showN2(pt[][] samplePoints) {
       
       /* calculate normal from cross products */
       vec norm = cross(AC, BD);
+      norm = norm.normalize();
+      norm = norm.mul(30);
       show(S, norm, orange);
     }
   }
@@ -93,6 +97,8 @@ void showN3(pt[][] samplePoints, float e) {
       
       /* calculate normal from cross products */
       vec norm = A(A(c1, c2), A(c3, c4));
+      norm = norm.normalize();
+      norm = norm.mul(30);
       show(S, norm, grey);
     }
   }
@@ -113,6 +119,8 @@ vec cross(vec u, vec v) {
  * Show a points normal
  */
 void show(pt p, vec n, color c) {
+  stroke(c);
   fill(c);
-  arrow(p, n, 30);
+  arrow(p, n, 5);
 }
+
