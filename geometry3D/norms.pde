@@ -1,4 +1,4 @@
-void showNorms(pt P, float s, float t, float e) {
+vec showNorms(pt P, float s, float t, float e) {
   /* get surrounding points
       D
    A  S  C
@@ -10,12 +10,14 @@ void showNorms(pt P, float s, float t, float e) {
   C = coons(PtQ.G, s+e, t);
   D = coons(PtQ.G, s, t-e);
  
-  showN1(P, A, B, C, D, s, t, e, magenta);
-  showN2(P, A, B, C, D, s, t, e);
-  showN3(P, A, B, C, D, s, t, e/5.0, grey);
+  vec n1 = showN1(P, A, B, C, D, s, t, e, magenta);
+  vec n2 = showN2(P, A, B, C, D, s, t, e);
+  vec n3 = showN3(P, A, B, C, D, s, t, e/5.0, grey);
+  
+  return n1;
 }
 
-void showN1(pt S, pt A, pt B, pt C, pt D, float s, float t, float e, color c) {
+vec showN1(pt S, pt A, pt B, pt C, pt D, float s, float t, float e, color c) {
   /* calculate vectors from S to surrounding points */
   vec SA, SB, SC, SD;
   SA = V(S, A);
@@ -35,9 +37,10 @@ void showN1(pt S, pt A, pt B, pt C, pt D, float s, float t, float e, color c) {
   norm = norm.normalize();
   norm = norm.mul(-30);
   show(S, norm, magenta);
+  return norm;
 }
 
-void showN2(pt S, pt A, pt B, pt C, pt D, float s, float t, float e) {
+vec showN2(pt S, pt A, pt B, pt C, pt D, float s, float t, float e) {
   /* calculate vectors of surrounding points */
   vec AC, BD;
   AC = V(A, C);
@@ -48,14 +51,16 @@ void showN2(pt S, pt A, pt B, pt C, pt D, float s, float t, float e) {
   norm = norm.normalize();
   norm = norm.mul(-30);
   show(S, norm, orange);
+  return norm;
 }
 
-void showN3(pt S, pt A, pt B, pt C, pt D, float s, float t, float e, color c) {
+vec showN3(pt S, pt A, pt B, pt C, pt D, float s, float t, float e, color c) {
   A = coons(PtQ.G, s-e, t);
   B = coons(PtQ.G, s, t+e);
   C = coons(PtQ.G, s+e, t);
   D = coons(PtQ.G, s, t-e);
-  showN1(S, A, B, C, D, s, t, e, grey);
+  vec norm = showN1(S, A, B, C, D, s, t, e, grey);
+  return norm;
 }
 
 /**
