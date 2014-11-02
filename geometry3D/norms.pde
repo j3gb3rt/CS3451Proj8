@@ -65,25 +65,34 @@ void showN2(pt[][] samplePoints) {
   }
 }
 
-void showN3(pt[][] samplePoints, e) {
+void showN3(pt[][] samplePoints, float e) {
   for (int x=1; x<samplePoints.length-1; x++) {
     for (int y=1; y<samplePoints[x].length-1; y++) {
       pt S = samplePoints[x][y];
       
       /* get surrounding points */
       pt A, B, C, D;
-      A = samplePoints[x-1][y];
-      B = samplePoints[x][y+1];
-      C = samplePoints[x+1][y];
-      D = samplePoints[x][y-1];
+      A = coons(PtQ.G, x-e, y);
+      B = coons(PtQ.G, x, y+e);
+      C = coons(PtQ.G, x+e, y);
+      D = coons(PtQ.G, x, y-e);
       
-      /* calculate vectors of surrounding points */
-      vec AC, BD;
-      AC = V(A, C);
-      BD = V(B, D);
+      /* calculate vectors from S to surrounding points */
+      vec SA, SB, SC, SD;
+      SA = V(S, A);
+      SB = V(S, B);
+      SC = V(S, C);
+      SD = V(S, D);
+      
+      /* get cross products */
+      vec c1, c2, c3, c4;
+      c1 = cross(SA, SB);
+      c2 = cross(SB, SC);
+      c3 = cross(SC, SD);
+      c4 = cross(SD, SA);
       
       /* calculate normal from cross products */
-      vec norm = cross(AC, BD);
+      vec norm = A(A(c1, c2), A(c3, c4));
       show(S, norm, grey);
     }
   }
