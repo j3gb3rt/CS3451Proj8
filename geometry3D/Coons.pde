@@ -43,7 +43,7 @@ void drawBorders(pt[] P){
   beginShape(); for(float t=0; t<1.001; t+=e) v(coons(P,t,1)); endShape();
   }
 
-void drawGrid(pt[] P, float e){
+void drawGrid(pt[] P, float e, boolean mode2){
   samplePoints = new pt[sampleSegments][sampleSegments];
   normals = new vec[sampleSegments][sampleSegments];
   int sampleRow = 0;
@@ -62,18 +62,20 @@ void drawGrid(pt[] P, float e){
       pt4 = coons(P,s+e,t);
       samplePoints[sampleRow][sampleColumn] = coons(P,s+(e/2), t+(e/2));
 
-      
+      if(!mode2){
       beginShape(); 
         v(pt1);
         v(pt2);
         v(pt3); 
         v(pt4);
       endShape(CLOSE);
-      
+      }
       // draw normals
+  
       vec norm = showNorms(samplePoints[sampleRow][sampleColumn], s+(e/2), t+(e/2), e/2);
       normals[sampleRow][sampleColumn] = norm;
       noFill(); stroke(blue); strokeWeight(2);
+      
       
       sampleRow++;
     }
@@ -86,14 +88,27 @@ void shadeSurface(pt[] P, float e){
   {beginShape(); v(coons(P,s,t)); v(coons(P,s+e,t)); v(coons(P,s+e,t+e)); v(coons(P,s,t+e)); endShape(CLOSE);}
   }
  
- void shadeSurfaceGouraud(pt[] P, float e, float c){ 
-     
- }
+
  void shadeSurfaceTextured(pt[] P, float e){
    fill(white); 
     for(float s=0; s<1.001-e; s+=e) for(float t=0; t<1.001-e; t+=e) 
   {beginShape(); texture(myFace); vTextured(coons(P,s,t),s,t); vTextured(coons(P,s+e,t),s+e,t);vTextured(coons(P,s+e,t+e),s+e,t+e);vTextured(coons(P,s,t+e),s,t+e); endShape(CLOSE);}
   }
  
+  
+  void shadeSurfaceGouraud(pt[] P, float e){ 
+    int col=0; 
+     for(float s=0; s<1.001-e; s+=e){
+       int row=0;
+        for(float t=0; t<1.001-e; t+=e) {
+          vec v=normals[row][col];
+          float nx=v.x; float ny=v.y; float nz=v.z; 
+          beginShape();normal(nx,ny,nz); v(coons(P,s,t)); v(coons(P,s+e,t)); v(coons(P,s+e,t+e)); v(coons(P,s,t+e)); endShape(CLOSE);//need to change to normal
+          row++;
+       }
+      col++;
+     }
+  }
+
   
   
