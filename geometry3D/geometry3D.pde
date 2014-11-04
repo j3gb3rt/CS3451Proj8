@@ -11,7 +11,8 @@ Boolean j=false;
 Boolean k=false;
 Boolean w=false;
 ball3d sphere;
-
+boolean mode2=false;
+boolean mode1=false;
 
 void setup() {
   myFace = loadImage("data/pic_c.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
@@ -82,25 +83,35 @@ void draw() {
     
     if(mode3){
       if(gourand){
-        shadeSurfaceGouraud(PtQ.G,0.1,0.05);
+        shadeSurfaceGouraud(PtQ.G,0.1);
       }
       else{
         shadeSurfaceTextured(PtQ.G,0.1);
       }
-      noFill(); noStroke(); drawGrid(PtQ.G,sampleSegmentSize);
+      noFill(); noStroke(); drawGrid(PtQ.G,sampleSegmentSize,mode2);
     } else {
+      if(!gourand){
       fill(cyan); shadeSurface(PtQ.G,0.01);
-      noFill(); stroke(blue); strokeWeight(2); drawGrid(PtQ.G,sampleSegmentSize);
+      }
+      else{
+        fill(cyan); shadeSurfaceGouraud(PtQ.G,sampleSegmentSize);
+      }
+      noFill(); stroke(blue); strokeWeight(2); drawGrid(PtQ.G,sampleSegmentSize,mode2);
       stroke(red); fill(red);
+    }
+    
+      if(!mode2){
       for(int i = 0; i < (sampleSegments); i++) {
         for (int j = 0; j < (sampleSegments); j++) {
           show(samplePoints[i][j], 5.0f);
           show(samplePoints[i][j], i + ", " + j);
         }
       }
-    }
+      }
+   if(mode1){
   sphere.roll();
   sphere.draw();
+   }
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
 
   if(keyPressed) {stroke(red); fill(white); ellipse(mouseX,mouseY,26,26); fill(red); text(key,mouseX-5,mouseY+4);}
@@ -134,6 +145,8 @@ void keyPressed() {
   if(key=='a') animating=!animating; // toggle animation
   if(key=='#') exit();
   if(key=='G') gourand=!gourand;
+  if(key=='1') mode1=!mode1; //ball
+  if(key=='2') mode2=!mode2; //red centers +grid
   if(key=='3') {if(mode3==false){mode3=true;}else{mode3=false;}}
   if(key=='4'){c=true;j=false;k=false;w=false;}
   if(key=='5'){j=true;c=false;k=false;w=false;}
@@ -173,7 +186,7 @@ void mouseDragged() {
  
 // **** Header, footer, help text on canvas
 void displayHeader() { // Displays title and authors face on screen
-    scribeHeader(title,0); scribeHeaderRight(name); 
+    scribeHeader(title,0); scribeHeaderRight(name1, name2, name3, name4); 
     fill(white);
     }
 void displayFooter() { // Displays help text at the bottom
@@ -181,7 +194,8 @@ void displayFooter() { // Displays help text at the bottom
     scribeFooter(menu,0); 
     }
 
-String title ="2014: Polyloop Editor in 3D", name ="Jarek Rossignac",
+String title ="2014: Polyloop Editor in 3D", name1 ="Christopher Trimble", name2="Jonathan Egbert", name3="Katie Bentley", name4="David Wesley Carlan",
        menu="?:help, !:picture, ~:(start/stop) capture, space: rotate, s/wheel:closer, f/F: refocus, drag/shift: red xy/z, A:anim, #:quit",
        guide="i:insert, d:delete, .:snap F to vertex, l/L: load, w/W:write to file, q/p:copy"; // user's guide
+
 
